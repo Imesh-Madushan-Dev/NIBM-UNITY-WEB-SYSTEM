@@ -9,3 +9,12 @@ const Gradient kContainerGradient = LinearGradient(
   begin: Alignment.centerLeft,
   end: Alignment.centerRight,
 );
+
+const Gradient kBlueToLightBlue = LinearGradient(
+  colors: [
+    Color.fromARGB(255, 203, 209, 255),
+    Color.fromARGB(255, 208, 188, 255)
+  ], // Light gray tones
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+);

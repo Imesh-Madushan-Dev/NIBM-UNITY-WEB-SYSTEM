@@ -18,9 +18,43 @@ class _LoginPageState extends State<LoginPage> {
 
   bool isStudentSelected = true;
 
+  void _alertBox(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Support"),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: ClipRRect(
+        borderRadius: BorderRadius.circular(100),
+        child: FloatingActionButton(
+          onPressed: () {
+            _alertBox(
+                "Enter your LMS email and password to Log in, \nThank you");
+          },
+          backgroundColor: kWhiteColor,
+          child: const Icon(
+            Icons.question_mark_rounded,
+            color: kMainColor,
+          ),
+        ),
+      ),
       body: Container(
         decoration: const BoxDecoration(gradient: kContainerGradient),
         child: Center(
@@ -132,7 +166,7 @@ class _LoginPageState extends State<LoginPage> {
                               onTap: () {},
                               child: Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(horizontal: 40),
+                                    const EdgeInsets.symmetric(horizontal: 20),
                                 child: Container(
                                   width: double.infinity,
                                   padding: const EdgeInsets.symmetric(
@@ -177,7 +211,7 @@ class _LoginPageState extends State<LoginPage> {
   }) {
     return AnimatedContainer(
       height: 80,
-      width: 150,
+      width: 120,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
       decoration: BoxDecoration(
@@ -209,7 +243,7 @@ class _LoginPageState extends State<LoginPage> {
   //* Text Field Widget
   Widget _textField(String label, TextEditingController controller) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: TextFormField(
         controller: controller,
         validator: (value) {
