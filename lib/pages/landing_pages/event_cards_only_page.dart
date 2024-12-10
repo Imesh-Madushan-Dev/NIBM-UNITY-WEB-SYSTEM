@@ -119,7 +119,9 @@ class _EventCardsPageState extends State<EventCardsPage> {
                 size: 30,
               ),
               color: kWhiteColor,
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
             title: const Text(
               'Ongoing Events',

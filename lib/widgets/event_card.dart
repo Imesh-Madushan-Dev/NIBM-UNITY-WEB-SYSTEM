@@ -43,8 +43,8 @@ class _EventCardState extends State<EventCard> {
           boxShadow: [
             BoxShadow(
               color: _isHovered
-                  ? kMainColor.withOpacity(0.6)
-                  : Colors.black.withOpacity(0.2),
+                  ? kMainColor.withAlpha((0.6 * 255).toInt())
+                  : Colors.black.withAlpha((0.2 * 255).toInt()),
               spreadRadius: 0,
               blurRadius: _isHovered ? 15 : 5,
               offset: const Offset(0, 4),
@@ -77,7 +77,7 @@ class _EventCardState extends State<EventCard> {
                       ),
                     );
                   },
-                  errorBuilder: (context, error, stackTrace) => SizedBox(
+                  errorBuilder: (context, error, stackTrace) => const SizedBox(
                     height: 175,
                     child: Placeholder(),
                   ),

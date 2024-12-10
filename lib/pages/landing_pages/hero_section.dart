@@ -91,7 +91,8 @@ class _HeroSectionState extends State<HeroSection> {
                                   () {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
-                                        builder: (context) => const EventCardsPage(),
+                                        builder: (context) =>
+                                            const EventCardsPage(),
                                       ),
                                     );
                                   },
@@ -143,7 +144,8 @@ class _HeroSectionState extends State<HeroSection> {
                                   () {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
-                                        builder: (context) => const EventCardsPage(),
+                                        builder: (context) =>
+                                            const EventCardsPage(),
                                       ),
                                     );
                                   },
@@ -241,7 +243,7 @@ class _HeroSectionState extends State<HeroSection> {
               text,
               style: TextStyle(
                 color: textColor,
-                fontSize: isDesktop ? 20: 16,
+                fontSize: isDesktop ? 20 : 16,
               ),
             ),
           ],

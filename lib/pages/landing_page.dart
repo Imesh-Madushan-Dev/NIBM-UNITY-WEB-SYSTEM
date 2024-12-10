@@ -4,14 +4,9 @@ import 'package:nibm_unity/pages/landing_pages/services_section.dart';
 import 'package:nibm_unity/pages/landing_pages/hero_section.dart';
 import 'package:nibm_unity/widgets/gradient_container.dart';
 
-class LandingPage extends StatefulWidget {
-  const LandingPage({super.key});
+class LandingPage extends StatelessWidget {
+  LandingPage({super.key});
 
-  @override
-  State<LandingPage> createState() => _LandingPageState();
-}
-
-class _LandingPageState extends State<LandingPage> {
   final ScrollController _scrollController = ScrollController();
 
   void _scrollToSection(GlobalKey key) {
@@ -23,7 +18,9 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   final GlobalKey _homeKey = GlobalKey();
+
   final GlobalKey _servicesKey = GlobalKey();
+
   final GlobalKey _aboutKey = GlobalKey();
 
   //* Header
@@ -58,7 +55,6 @@ class _LandingPageState extends State<LandingPage> {
                   child: const Text('About',
                       style: TextStyle(color: Colors.white)),
                 ),
-                
               ],
             )
           else
@@ -75,7 +71,6 @@ class _LandingPageState extends State<LandingPage> {
                   case 2:
                     _scrollToSection(_aboutKey);
                     break;
-                 
                 }
               },
               itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
@@ -91,7 +86,6 @@ class _LandingPageState extends State<LandingPage> {
                   value: 2,
                   child: Text('About'),
                 ),
-           
               ],
             ),
         ],
@@ -110,16 +104,29 @@ class _LandingPageState extends State<LandingPage> {
               controller: _scrollController,
               child: Column(
                 children: [
-                  Container(key: _homeKey, child: const HeroSection()),
+                  Container(key: _homeKey, child:  const HeroSection()),
                   Divider(
                     color: Colors.grey[500],
                     thickness: 1,
                   ),
-                  Container(key: _servicesKey, child: ServicesSection()),Divider(
+                  Container(key: _servicesKey, child: ServicesSection()),
+                  Divider(
                     color: Colors.grey[500],
                     thickness: 1,
                   ),
                   Container(key: _aboutKey, child: const AboutSection()),
+                  const GradientContainer(
+                      child: Center(
+                          child: Padding(
+                    padding: EdgeInsets.all(30),
+                    child: Text(
+                      'Made with ❤️ by NIBM Students',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14),
+                    ),
+                  ))),
                 ],
               ),
             ),
