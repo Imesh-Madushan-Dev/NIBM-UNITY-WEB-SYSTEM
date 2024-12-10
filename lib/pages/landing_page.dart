@@ -58,33 +58,7 @@ class _LandingPageState extends State<LandingPage> {
                   child: const Text('About',
                       style: TextStyle(color: Colors.white)),
                 ),
-                // Container(
-                //   decoration: BoxDecoration(
-                //     border: Border.all(color: Colors.white, width: 1),
-                //     borderRadius: BorderRadius.circular(100),
-                //   ),
-                //   child: GestureDetector(
-                //     onTap: () {
-                //       //navigate to login page
-                //       Navigator.of(context).push(
-                //         MaterialPageRoute(
-                //           builder: (context) => const LoginPage(),
-                //         ),
-                //       );
-                //     },
-                //     child: const Padding(
-                //       padding:
-                //           EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                //       child: Text(
-                //         'Login',
-                //         style: TextStyle(
-                //           color: Colors.white,
-                //           fontWeight: FontWeight.bold,
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // ),
+                
               ],
             )
           else
@@ -101,13 +75,7 @@ class _LandingPageState extends State<LandingPage> {
                   case 2:
                     _scrollToSection(_aboutKey);
                     break;
-                  // case 3:
-                  //   Navigator.of(context).push(
-                  //     MaterialPageRoute(
-                  //       builder: (context) => const LoginPage(),
-                  //     ),
-                  //   );
-                  // break;
+                 
                 }
               },
               itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
@@ -123,13 +91,7 @@ class _LandingPageState extends State<LandingPage> {
                   value: 2,
                   child: Text('About'),
                 ),
-                // const PopupMenuItem<int>(
-                //   value: 3,
-                //   child: Text(
-                //     'Login',
-                //     style: TextStyle(color: kMainColor),
-                //   ),
-                // ),
+           
               ],
             ),
         ],
@@ -153,7 +115,10 @@ class _LandingPageState extends State<LandingPage> {
                     color: Colors.grey[500],
                     thickness: 1,
                   ),
-                  Container(key: _servicesKey, child: ServicesSection()),
+                  Container(key: _servicesKey, child: ServicesSection()),Divider(
+                    color: Colors.grey[500],
+                    thickness: 1,
+                  ),
                   Container(key: _aboutKey, child: const AboutSection()),
                 ],
               ),

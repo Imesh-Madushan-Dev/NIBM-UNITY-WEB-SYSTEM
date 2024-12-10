@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:nibm_unity/constants/colors.dart';
+import 'package:nibm_unity/widgets/animated_container.dart';
 
 class ServicesSection extends StatelessWidget {
   ServicesSection({super.key});
-
-// Data for mission points
-  final List<String> _missionPoints = [
-    "Connect students across branches",
-    "Streamline event management",
-    "Check Reuslts and Lec Materials",
-    "All Services in one Home",
-  ];
 
   // Data for service cards
   final List<Map<String, dynamic>> _services = [
@@ -33,22 +26,16 @@ class ServicesSection extends StatelessWidget {
           "Celebrate achievements and milestones within our university community."
     },
     {
-      "icon": Icons.school,
-      "title": "Knowledge Sharing",
-      "description":
-          "Foster collaboration and learning through shared experiences and events."
-    },
-    {
-      "icon": Icons.people,
-      "title": "Connect Students",
-      "description":
-          "Bringing together students from all branches to create a vibrant community."
-    },
-    {
       "icon": Icons.event,
-      "title": "Event Management",
+      "title": "Check Results & Materials",
       "description":
-          "Seamlessly organize and participate in events across all departments."
+          "Access exam results and lecture materials easily through the platform."
+    },
+    {
+      "icon": Icons.home,
+      "title": "All Services in One Home",
+      "description":
+          "A unified platform for all your university needs, simplifying access to information and services."
     },
   ];
 
@@ -86,109 +73,118 @@ class ServicesSection extends StatelessWidget {
           const SizedBox(height: 16),
 
           // Mission Points
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: _missionPoints.map((point) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Row(
-                  children: [
-                    const Icon(Icons.check_circle_rounded,
-                        color: kMainColor, size: 20),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        point,
-                        style: TextStyle(
-                          fontSize: isDesktop ? 16 : 14,
-                          color: kBlackColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }).toList(),
-          ),
+          _buildMissionPoints(isDesktop),
 
           const SizedBox(height: 40),
 
-          // Service Cards (Responsive Grid)
-          isDesktop
-              ? Wrap(
-                  spacing: 20,
-                  runSpacing: 20,
-                  children: _services
-                      .map((service) => SizedBox(
-                            width: (size.width -
-                                    (isDesktop ? size.width * 0.12 : 32) -
-                                    40) /
-                                3,
-                            child: _buildServiceCard(
-                                service['icon'] as IconData,
-                                service['title']!,
-                                service['description']!,
-                                isDesktop),
-                          ))
-                      .toList(),
-                )
-              : Column(
-                  children: _services
-                      .map((service) => Padding(
-                            padding: const EdgeInsets.only(bottom: 20.0),
-                            child: _buildServiceCard(
-                                service['icon'] as IconData,
-                                service['title']!,
-                                service['description']!,
-                                isDesktop),
-                          ))
-                      .toList(),
-                ),
+          // Service Cards (Optimized)
+          _buildServiceCards(isDesktop, size),
+
           const SizedBox(height: 25),
         ],
       ),
     );
   }
 
+  // Optimized Mission Points Widget
+  Widget _buildMissionPoints(bool isDesktop) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildMissionPoint("Connect students across branches", isDesktop),
+        _buildMissionPoint("Streamline event management", isDesktop),
+        _buildMissionPoint("Check Results and Lecture Materials", isDesktop),
+        _buildMissionPoint("All Services in one Home", isDesktop),
+      ],
+    );
+  }
+
+  // Helper for creating individual mission points
+  Widget _buildMissionPoint(String point, bool isDesktop) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Row(
+        children: [
+          const Icon(Icons.check_box_outline_blank_outlined,
+              color: kMainColor, size: 20),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              point,
+              style: TextStyle(
+                fontSize: isDesktop ? 16 : 14,
+                color: kBlackColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Optimized Service Cards Widget
+  Widget _buildServiceCards(bool isDesktop, Size size) {
+    return isDesktop
+        ? Wrap(
+            spacing: 20,
+            runSpacing: 20,
+            children: _services.map((service) {
+              return SizedBox(
+                width: isDesktop
+                    ? (size.width - (size.width * 0.12) - 40) / 3
+                    : size.width - 32,
+                child: _buildServiceCard(
+                  service['icon'] as IconData,
+                  service['title']!,
+                  service['description']!,
+                  isDesktop,
+                ),
+              );
+            }).toList(),
+          )
+        : Column(
+            children: _services.map((service) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: _buildServiceCard(
+                  service['icon'] as IconData,
+                  service['title']!,
+                  service['description']!,
+                  isDesktop,
+                ),
+              );
+            }).toList(),
+          );
+  }
+
   // Service Card Widget
   Widget _buildServiceCard(
-      IconData? icon, String title, String description, bool isDesktop) {
+    IconData icon,
+    String title,
+    String description,
+    bool isDesktop,
+  ) {
     bool isHovered = false;
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
         return MouseRegion(
-          onEnter: (_) => setState(() => isHovered =
-              true), // Update state using the StatefulBuilder's setState
-          onExit: (_) => setState(() => isHovered =
-              false), // Update state using the StatefulBuilder's setState
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
+          onEnter: (_) => setState(() => isHovered = true),
+          onExit: (_) => setState(() => isHovered = false),
+          child: CusAnimatedContainer(
+            isHovered: isHovered,
+            isDesktop: isDesktop,
             width: isDesktop ? 250 : double.infinity,
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              gradient: kBlueToLightBlue,
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withAlpha(60),
-                  spreadRadius: isHovered ? 10 : 2,
-                  blurRadius: isHovered ? 10 : 5,
-                  offset: const Offset(1, 5),
-                ),
-              ],
-            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (icon != null) Icon(icon, size: 40, color: kMainColor),
-                if (icon != null) const SizedBox(height: 16),
+                Icon(icon, size: 40, color: kWhiteColor),
+                const SizedBox(height: 16),
                 Text(
                   title,
                   style: TextStyle(
                     fontSize: isDesktop ? 18 : 16,
                     fontWeight: FontWeight.bold,
-                    color: kBlackColor,
+                    color: kWhiteColor,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -196,7 +192,7 @@ class ServicesSection extends StatelessWidget {
                   description,
                   style: TextStyle(
                     fontSize: isDesktop ? 14 : 12,
-                    color: kBlackColor,
+                    color: kWhiteColor,
                   ),
                 ),
               ],
