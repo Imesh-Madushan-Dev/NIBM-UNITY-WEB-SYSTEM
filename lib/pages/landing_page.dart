@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nibm_unity/pages/landing_pages/about_section.dart';
 import 'package:nibm_unity/pages/landing_pages/services_section.dart';
-import 'package:nibm_unity/pages/login_page.dart';
 import 'package:nibm_unity/pages/landing_pages/hero_section.dart';
 import 'package:nibm_unity/widgets/gradient_container.dart';
-
-import '../constants/colors.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
