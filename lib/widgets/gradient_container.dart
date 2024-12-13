@@ -7,6 +7,7 @@ class GradientContainer extends StatelessWidget {
   final Widget child;
   final EdgeInsets? padding;
   final DecorationImage? image;
+  final BorderRadius? radius;
 
   const GradientContainer({
     super.key,
@@ -14,7 +15,7 @@ class GradientContainer extends StatelessWidget {
     this.width,
     required this.child,
     this.padding,
-    this.image,
+    this.image, this.radius,
   });
 
   @override
@@ -23,8 +24,9 @@ class GradientContainer extends StatelessWidget {
       padding: padding,
       height: height,
       width: width,
-      decoration:
-           BoxDecoration(gradient: kContainerGradient, image: image),
+      decoration: BoxDecoration(
+        borderRadius: radius ?? BorderRadius.zero,
+        gradient: kContainerGradient, image: image),
       child: child,
     );
   }

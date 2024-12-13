@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nibm_unity/constants/colors.dart';
-import 'package:nibm_unity/pages/landing_pages/event_cards_only_page.dart';
 import 'package:nibm_unity/widgets/gradient_container.dart';
 
 import '../login_page.dart';
@@ -45,7 +45,8 @@ class _HeroSectionState extends State<HeroSection> {
                 height: size.height * 0.6,
                 width: size.width,
                 image: DecorationImage(
-                  image: const AssetImage("assets/background.jpg"),
+                  image: const NetworkImage(
+                      "https://i.ibb.co/jLpyqCR/background.jpg"),
                   fit: BoxFit.cover,
                   colorFilter: ColorFilter.mode(
                     Colors.black.withAlpha(30),
@@ -89,12 +90,7 @@ class _HeroSectionState extends State<HeroSection> {
                                   context,
                                   "View Events",
                                   () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const EventCardsPage(),
-                                      ),
-                                    );
+                                    context.push('/no-log-events');
                                   },
                                   _isHoveredViewEvents
                                       ? Colors.white
@@ -114,11 +110,7 @@ class _HeroSectionState extends State<HeroSection> {
                                   context,
                                   "Get Started",
                                   () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => const LoginPage(),
-                                      ),
-                                    );
+                                    context.go('/login');
                                   },
                                   _isHoveredGetStarted
                                       ? Colors.white
@@ -142,12 +134,7 @@ class _HeroSectionState extends State<HeroSection> {
                                   context,
                                   "View Events",
                                   () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const EventCardsPage(),
-                                      ),
-                                    );
+                                    context.push('/landing/no-log-events');
                                   },
                                   _isHoveredViewEvents
                                       ? Colors.white
@@ -209,7 +196,7 @@ class _HeroSectionState extends State<HeroSection> {
   Widget _animatedButton(
       BuildContext context,
       String text,
-      VoidCallback onPressed,
+      final VoidCallback onPressed,
       Color fillColor,
       Color borderColor,
       Color textColor,

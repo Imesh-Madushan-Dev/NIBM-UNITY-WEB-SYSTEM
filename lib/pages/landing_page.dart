@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nibm_unity/constants/colors.dart';
+import 'package:nibm_unity/pages/ai_chat_page.dart';
 import 'package:nibm_unity/pages/landing_pages/about_section.dart';
 import 'package:nibm_unity/pages/landing_pages/services_section.dart';
 import 'package:nibm_unity/pages/landing_pages/hero_section.dart';
+import 'package:nibm_unity/widgets/floating_button.dart';
 import 'package:nibm_unity/widgets/gradient_container.dart';
 
 class LandingPage extends StatelessWidget {
@@ -96,6 +101,17 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: ClipRRect(
+        borderRadius: BorderRadius.circular(100),
+        child: CustomFloatingBtn(
+          bgColor: kMainColor,
+          onPressed: () => context.push('/ai-chat'),
+          child: SvgPicture.asset(
+            'assets/stars.svg',
+            height: 30,
+          ),
+        ),
+      ),
       body: Column(
         children: [
           _buildHeader(context),
@@ -104,7 +120,7 @@ class LandingPage extends StatelessWidget {
               controller: _scrollController,
               child: Column(
                 children: [
-                  Container(key: _homeKey, child:  const HeroSection()),
+                  Container(key: _homeKey, child: const HeroSection()),
                   Divider(
                     color: Colors.grey[500],
                     thickness: 1,

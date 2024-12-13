@@ -1,7 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nibm_unity/constants/colors.dart';
+import 'package:nibm_unity/widgets/gradient_container.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -28,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.of(context).pop();
               },
               child: const Text('OK'),
             ),
@@ -55,8 +57,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
-      body: Container(
-        decoration: const BoxDecoration(gradient: kContainerGradient),
+      body: GradientContainer(
         child: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -87,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                                   children: [
                                     IconButton(
                                       onPressed: () {
-                                        Navigator.pop(context);
+                                        context.go('/home');
                                       },
                                       icon: const Icon(Icons.arrow_back,
                                           color: kWhiteColor),

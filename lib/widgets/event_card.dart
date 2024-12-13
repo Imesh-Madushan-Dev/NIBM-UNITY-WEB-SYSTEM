@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nibm_unity/constants/colors.dart';
+import 'package:nibm_unity/widgets/gradient_container.dart';
 
 class EventCard extends StatefulWidget {
   final String title;
@@ -8,6 +9,7 @@ class EventCard extends StatefulWidget {
   final String date;
   final String time;
   final String location;
+  final String category;
 
   const EventCard({
     super.key,
@@ -17,6 +19,7 @@ class EventCard extends StatefulWidget {
     required this.date,
     required this.time,
     required this.location,
+    required this.category,
   });
 
   @override
@@ -55,30 +58,29 @@ class _EventCardState extends State<EventCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Image with Zoom Effect
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(14),
-                topRight: Radius.circular(14),
-              ),
-              child: SizedBox(
+            AspectRatio(
+              aspectRatio: 1 / 1, // Maintain 1:1 aspect ratio
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(14),
+                  topRight: Radius.circular(14),
+                ),
                 child: Image.network(
                   widget.imageUrl,
-                  height: 180,
-                  width: double.infinity,
                   fit: BoxFit.cover,
                   loadingBuilder: (context, child, loadingProgress) {
                     if (loadingProgress == null) return child;
-                    return Center(
-                      child: CircularProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
-                            : null,
+                    return const AspectRatio(
+                      aspectRatio: 1 / 1,
+                      child: Center(
+                        child: CircularProgressIndicator(),
                       ),
                     );
                   },
-                  errorBuilder: (context, error, stackTrace) => const SizedBox(
-                    height: 175,
+                  errorBuilder: (context, error, stackTrace) =>
+                      const AspectRatio(
+                    aspectRatio:
+                        1 / 1, // Maintain 1:1 aspect ratio for placeholder
                     child: Placeholder(),
                   ),
                 ),
@@ -95,12 +97,24 @@ class _EventCardState extends State<EventCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.description,
+                    widget.title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 22,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  GradientContainer(
+                    radius: BorderRadius.circular(100),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 15),
+                      child: Text(
+                        widget.category,
+                        style: const TextStyle(color: kWhiteColor),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10),
