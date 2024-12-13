@@ -110,7 +110,7 @@ class _HeroSectionState extends State<HeroSection> {
                                   context,
                                   "Get Started",
                                   () {
-                                    context.go('/login');
+                                    context.push('/login');
                                   },
                                   _isHoveredGetStarted
                                       ? Colors.white

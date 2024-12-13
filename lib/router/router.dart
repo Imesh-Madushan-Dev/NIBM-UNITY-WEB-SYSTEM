@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nibm_unity/pages/ai_chat_page.dart';
+import 'package:nibm_unity/pages/dashboard_page.dart';
 import 'package:nibm_unity/pages/landing_page.dart';
 import 'package:nibm_unity/pages/landing_pages/event_cards_only_page.dart';
 import 'package:nibm_unity/pages/login_page.dart';
@@ -59,6 +60,13 @@ class RouterClass {
         name: 'ai-chat',
         builder: (context, state) {
           return const ChatPage();
+        },
+      ),
+      GoRoute(
+        path: '/dashboard',
+        name: 'dashboard',
+        builder: (context, state) {
+          return const DashboardPage();
         },
       ),
     ],

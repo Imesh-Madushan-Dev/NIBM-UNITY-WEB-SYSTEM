@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nibm_unity/constants/colors.dart';
-import 'package:nibm_unity/pages/ai_chat_page.dart';
 import 'package:nibm_unity/pages/landing_pages/about_section.dart';
 import 'package:nibm_unity/pages/landing_pages/services_section.dart';
 import 'package:nibm_unity/pages/landing_pages/hero_section.dart';
