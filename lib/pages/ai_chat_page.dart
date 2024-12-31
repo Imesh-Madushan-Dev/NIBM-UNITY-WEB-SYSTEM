@@ -20,8 +20,6 @@ class _ChatPageState extends State<ChatPage>
   final ScrollController _scrollController = ScrollController();
   late List<ChatMessage> _messages;
   bool _isLoading = false;
-  late AnimationController _animationController;
-  late Animation<double> _animation;
 
   // Use a more concise prompt
   final String customPrompt =
@@ -36,22 +34,6 @@ class _ChatPageState extends State<ChatPage>
         false,
       )
     ];
-
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    );
-    _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _animateAndScrollToBottom();
-    });
-  }
-
-  // Combined animation and scroll for efficiency
-  void _animateAndScrollToBottom() {
-    _animationController.forward();
-    _scrollToBottom();
   }
 
   Future<void> _sendMessage(GeminiService geminiService,
@@ -66,9 +48,6 @@ class _ChatPageState extends State<ChatPage>
 
     _messageController.clear();
     _scrollToBottom();
-
-    _animationController.reset();
-    _animationController.forward();
 
     try {
       final generatedText =
@@ -109,7 +88,7 @@ class _ChatPageState extends State<ChatPage>
   void dispose() {
     _messageController.dispose();
     _scrollController.dispose();
-    _animationController.dispose();
+
     super.dispose();
   }
 
@@ -148,7 +127,6 @@ class _ChatPageState extends State<ChatPage>
                 child: ChatListView(
                   messages: _messages,
                   scrollController: _scrollController,
-                  animation: _animation,
                 ),
               ),
               _buildMessageInputArea(geminiService),
@@ -208,13 +186,11 @@ class _ChatPageState extends State<ChatPage>
 class ChatListView extends StatelessWidget {
   final List<ChatMessage> messages;
   final ScrollController scrollController;
-  final Animation<double> animation;
 
   const ChatListView({
     super.key,
     required this.messages,
     required this.scrollController,
-    required this.animation,
   });
 
   @override
@@ -225,10 +201,7 @@ class ChatListView extends StatelessWidget {
       itemCount: messages.length,
       itemBuilder: (context, index) {
         if (index == 0 || index >= messages.length - 2) {
-          return FadeTransition(
-            opacity: animation,
-            child: messages[index],
-          );
+          return messages[index];
         } else {
           return messages[index];
         }

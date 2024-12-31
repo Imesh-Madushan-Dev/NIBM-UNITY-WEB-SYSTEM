@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
     final isDesktop = size.width > 900;
 
     return Scaffold(
-      floatingActionButton: _buildFloatingActionButton(),
+      floatingActionButton: _buildFloatingActionButton(isLogin),
       body: GradientContainer(
         child: Center(
           child: SingleChildScrollView(
@@ -64,14 +64,16 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildFloatingActionButton() {
+  Widget _buildFloatingActionButton(islogin) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(100),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
         child: FloatingActionButton(
           onPressed: () {
-            _alertBox("Enter your LMS email and password to Log in.");
+            _alertBox(islogin
+                ? "Enter your LMS email and password to Log in."
+                : "Enter your LMS email, name and password to Register. \n (GADSE241F-033@student.nibm.lk)");
           },
           backgroundColor: kWhiteColor,
           child: const Icon(Icons.question_mark_rounded, color: kMainColor),

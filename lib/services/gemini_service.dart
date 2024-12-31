@@ -35,6 +35,7 @@ class _GeminiPromptPageState extends State<GeminiPromptPage> {
       }
     });
   }
+  
 
   @override
   Widget build(BuildContext context) {

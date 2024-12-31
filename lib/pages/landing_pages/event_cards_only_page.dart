@@ -15,11 +15,11 @@ class EventCardsPage extends StatefulWidget {
   State<EventCardsPage> createState() => _EventCardsPageState();
 }
 
-enum EventFilter { ongoing, upcoming, missed }
+enum EventFilter { upcoming, missed }
 
 class _EventCardsPageState extends State<EventCardsPage> {
   late final Stream<List<Map<String, dynamic>>> _eventStream;
-  EventFilter _selectedFilter = EventFilter.ongoing;
+  EventFilter _selectedFilter = EventFilter.upcoming;
 
   @override
   void initState() {
@@ -29,11 +29,10 @@ class _EventCardsPageState extends State<EventCardsPage> {
         .stream(primaryKey: ['id']).order('date', ascending: true);
   }
 
-  // Improved _filterEvents with user-friendly date comparisons
   List<Map<String, dynamic>> _filterEvents(
       List<Map<String, dynamic>> events, EventFilter filter) {
     final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day); // Remove time part
+    final today = DateTime(now.year, now.month, now.day);
 
     return events.where((event) {
       final eventDate = DateTime.parse(event['date']);
@@ -41,20 +40,18 @@ class _EventCardsPageState extends State<EventCardsPage> {
           DateTime(eventDate.year, eventDate.month, eventDate.day);
 
       switch (filter) {
-        case EventFilter.ongoing:
-          return eventStart.isAtSameMomentAs(today);
         case EventFilter.upcoming:
-          return eventStart.isAfter(today);
+          return eventStart.isAfter(today) ||
+              eventStart.isAtSameMomentAs(today);
         case EventFilter.missed:
           return eventStart.isBefore(today);
       }
     }).toList();
   }
 
-  // Helper function to format dates nicely
   String _formatDate(String dateString) {
     final date = DateTime.parse(dateString);
-    final formatter = DateFormat('EEE, d MMM yyyy'); // e.g., Tue, 2 Oct 2023
+    final formatter = DateFormat('EEE, d MMM yyyy');
     return formatter.format(date);
   }
 
@@ -73,15 +70,13 @@ class _EventCardsPageState extends State<EventCardsPage> {
           ),
           toolbarHeight: 80,
           leading: IconButton(
-
             icon: const Icon(
               Icons.arrow_back_rounded,
               size: 30,
               color: kWhiteColor,
             ),
             onPressed: () {
-           
-              GoRouter.of(context).pop(); 
+              GoRouter.of(context).pop();
             },
           ),
           title: const Text(
@@ -96,15 +91,13 @@ class _EventCardsPageState extends State<EventCardsPage> {
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: isDesktop ? 100 : 15,
+            horizontal: isDesktop ? 50 : 15,
             vertical: 20,
           ),
           child: Column(
             children: [
-              // Filter Options
-              _buildFilterChips(), // Changed to FilterChips
+              _buildFilterSegmentedControl(),
               const SizedBox(height: 20),
-              // Event Cards
               Expanded(
                 child: StreamBuilder<List<Map<String, dynamic>>>(
                   stream: _eventStream,
@@ -125,16 +118,28 @@ class _EventCardsPageState extends State<EventCardsPage> {
 
                     if (filteredEvents.isEmpty) {
                       return Center(
-                          child: Text('No ${_selectedFilter.name} events',
-                              style: const TextStyle(color: kWhiteColor)));
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.asset("assets/images/no_events.png",
+                                height: 200),
+                            const SizedBox(height: 20),
+                            const Text(
+                              'No upcoming events',
+                              style:
+                                  TextStyle(color: kWhiteColor, fontSize: 18),
+                            ),
+                          ],
+                        ),
+                      );
                     }
 
                     return LayoutBuilder(
                       builder: (context, constraints) {
                         int crossAxisCount = (constraints.maxWidth > 1200)
-                            ? 3
+                            ? 4
                             : (constraints.maxWidth > 600)
-                                ? 2
+                                ? 3
                                 : 1;
 
                         return MasonryGridView.count(
@@ -152,8 +157,7 @@ class _EventCardsPageState extends State<EventCardsPage> {
                                     event['description'] ?? 'No Description',
                                 imageUrl: event['image'] ??
                                     'https://via.placeholder.com/150',
-                                date: _formatDate(
-                                    event['date'] ?? 'No Date'), // Format date
+                                date: _formatDate(event['date'] ?? 'No Date'),
                                 time: event['time'] ?? 'No Time',
                                 location: event['location'] ?? 'No Location',
                                 category: event['category'],
@@ -173,34 +177,30 @@ class _EventCardsPageState extends State<EventCardsPage> {
     );
   }
 
-  // FilterChips for a more modern look
-  Widget _buildFilterChips() {
-    return Wrap(
-      spacing: 8.0,
-      alignment: WrapAlignment.center,
-      children: EventFilter.values.map((filter) {
-        return FilterChip(
-          label: Text(filter.name.toUpperCase()),
-          selected: _selectedFilter == filter,
-          onSelected: (bool selected) {
-            setState(() {
-              _selectedFilter = filter;
-            });
-          },
-          backgroundColor: Colors.grey[300],
-          selectedColor: CupertinoColors.systemYellow,
-          checkmarkColor: Colors.white,
-          labelStyle: TextStyle(
-            color: Colors.black,
-            fontWeight:
-                _selectedFilter == filter ? FontWeight.bold : FontWeight.normal,
-          ),
-        );
-      }).toList(),
+  Widget _buildFilterSegmentedControl() {
+    return CupertinoSlidingSegmentedControl<EventFilter>(
+      groupValue: _selectedFilter,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      thumbColor: CupertinoColors.systemYellow,
+      backgroundColor: Colors.grey[300]!,
+      onValueChanged: (value) {
+        setState(() {
+          _selectedFilter = value!;
+        });
+      },
+      children: const <EventFilter, Widget>{
+        EventFilter.upcoming: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Text('Upcoming'),
+        ),
+        EventFilter.missed: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Text('Missed'),
+        ),
+      },
     );
   }
 
-  //* Alert Box
   void _alertBox() {
     showDialog(
       context: context,
@@ -236,8 +236,8 @@ class _EventCardsPageState extends State<EventCardsPage> {
                     children: [
                       TextButton(
                         style: ButtonStyle(
-                            backgroundColor:
-                                WidgetStateProperty.all(kWhiteColor)),
+                          backgroundColor: WidgetStateProperty.all(kWhiteColor),
+                        ),
                         onPressed: () {
                           context.go('/login');
                         },

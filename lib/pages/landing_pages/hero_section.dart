@@ -37,155 +37,152 @@ class _HeroSectionState extends State<HeroSection> {
     return LayoutBuilder(
       builder: (context, constraints) {
         return SizedBox(
-          height: size.height * 0.9,
+          height: size.height,
           width: size.width,
-          child: Column(
-            children: [
-              GradientContainer(
-                height: size.height * 0.6,
-                width: size.width,
-                image: DecorationImage(
-                  image: const NetworkImage(
-                      "https://i.ibb.co/jLpyqCR/background.jpg"),
-                  fit: BoxFit.cover,
-                  colorFilter: ColorFilter.mode(
-                    Colors.black.withAlpha(30),
-                    BlendMode.dstATop,
+          child: GradientContainer(
+            height: size.height,
+            width: size.width,
+            image: DecorationImage(
+              image:
+                  const NetworkImage("https://i.ibb.co/jLpyqCR/background.jpg"),
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(
+                Colors.black.withAlpha(30),
+                BlendMode.dstATop,
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  isDesktop
+                      ? 'Welcome to NIBM UNITY'
+                      : 'Welcome to \nNIBM UNITY',
+                  style: TextStyle(
+                    fontSize: isDesktop ? 60 : 40,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                const SizedBox(height: 20),
+                Text(
+                  'Let\'s changed the LMS Experience for everyone',
+                  style: TextStyle(
+                    fontSize: isDesktop ? 20 : 14,
+                    color: Colors.grey[200],
+                  ),
+                  maxLines: 4,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 50),
+                isDesktop
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          MouseRegion(
+                            onEnter: (_) => _onHoverViewEvents(true),
+                            onExit: (_) => _onHoverViewEvents(false),
+                            child: _animatedButton(
+                              context,
+                              "View Events",
+                              () {
+                                context.push('/home/events1');
+                              },
+                              _isHoveredViewEvents
+                                  ? Colors.white
+                                  : kWhiteColor.withAlpha(35),
+                              Colors.white,
+                              _isHoveredViewEvents
+                                  ? Colors.black
+                                  : Colors.white,
+                              Icons.event,
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          MouseRegion(
+                            onEnter: (_) => _onHoverGetStarted(true),
+                            onExit: (_) => _onHoverGetStarted(false),
+                            child: _animatedButton(
+                              context,
+                              "Get Started",
+                              () {
+                                context.push('/login');
+                              },
+                              _isHoveredGetStarted
+                                  ? Colors.white
+                                  : kWhiteColor.withAlpha(35),
+                              Colors.white,
+                              _isHoveredGetStarted
+                                  ? Colors.black
+                                  : Colors.white,
+                              Icons.arrow_forward,
+                            ),
+                          ),
+                        ],
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          MouseRegion(
+                            onEnter: (_) => _onHoverViewEvents(true),
+                            onExit: (_) => _onHoverViewEvents(false),
+                            child: _animatedButton(
+                              context,
+                              "View Events",
+                              () {
+                                context.push('/home/events1');
+                              },
+                              _isHoveredViewEvents
+                                  ? Colors.white
+                                  : kWhiteColor.withAlpha(35),
+                              Colors.white,
+                              _isHoveredViewEvents
+                                  ? Colors.black
+                                  : Colors.white,
+                              Icons.event,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          MouseRegion(
+                            onEnter: (_) => _onHoverGetStarted(true),
+                            onExit: (_) => _onHoverGetStarted(false),
+                            child: _animatedButton(
+                              context,
+                              "Get Started",
+                              () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginPage(),
+                                  ),
+                                );
+                              },
+                              _isHoveredGetStarted
+                                  ? Colors.white
+                                  : kWhiteColor.withAlpha(35),
+                              Colors.white,
+                              _isHoveredGetStarted
+                                  ? Colors.black
+                                  : Colors.white,
+                              Icons.arrow_forward,
+                            ),
+                          ),
+                        ],
+                      ),
+                const SizedBox(
+                  height: 100,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(
-                      isDesktop
-                          ? 'Welcome to NIBM UNITY'
-                          : 'Welcome to \nNIBM UNITY',
-                      style: TextStyle(
-                        fontSize: isDesktop ? 60 : 40,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      'Your gateway to campus events, activities, and unforgettable experiences.',
-                      style: TextStyle(
-                        fontSize: isDesktop ? 20 : 14,
-                        color: Colors.grey[200],
-                      ),
-                      maxLines: 4,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 50),
-                    isDesktop
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              MouseRegion(
-                                onEnter: (_) => _onHoverViewEvents(true),
-                                onExit: (_) => _onHoverViewEvents(false),
-                                child: _animatedButton(
-                                  context,
-                                  "View Events",
-                                  () {
-                                    context.push('/no-log-events');
-                                  },
-                                  _isHoveredViewEvents
-                                      ? Colors.white
-                                      : kWhiteColor.withAlpha(35),
-                                  Colors.white,
-                                  _isHoveredViewEvents
-                                      ? Colors.black
-                                      : Colors.white,
-                                  Icons.event,
-                                ),
-                              ),
-                              const SizedBox(width: 20),
-                              MouseRegion(
-                                onEnter: (_) => _onHoverGetStarted(true),
-                                onExit: (_) => _onHoverGetStarted(false),
-                                child: _animatedButton(
-                                  context,
-                                  "Get Started",
-                                  () {
-                                    context.push('/login');
-                                  },
-                                  _isHoveredGetStarted
-                                      ? Colors.white
-                                      : kWhiteColor.withAlpha(35),
-                                  Colors.white,
-                                  _isHoveredGetStarted
-                                      ? Colors.black
-                                      : Colors.white,
-                                  Icons.arrow_forward,
-                                ),
-                              ),
-                            ],
-                          )
-                        : Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              MouseRegion(
-                                onEnter: (_) => _onHoverViewEvents(true),
-                                onExit: (_) => _onHoverViewEvents(false),
-                                child: _animatedButton(
-                                  context,
-                                  "View Events",
-                                  () {
-                                    context.push('/landing/no-log-events');
-                                  },
-                                  _isHoveredViewEvents
-                                      ? Colors.white
-                                      : kWhiteColor.withAlpha(35),
-                                  Colors.white,
-                                  _isHoveredViewEvents
-                                      ? Colors.black
-                                      : Colors.white,
-                                  Icons.event,
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              MouseRegion(
-                                onEnter: (_) => _onHoverGetStarted(true),
-                                onExit: (_) => _onHoverGetStarted(false),
-                                child: _animatedButton(
-                                  context,
-                                  "Get Started",
-                                  () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => const LoginPage(),
-                                      ),
-                                    );
-                                  },
-                                  _isHoveredGetStarted
-                                      ? Colors.white
-                                      : kWhiteColor.withAlpha(35),
-                                  Colors.white,
-                                  _isHoveredGetStarted
-                                      ? Colors.black
-                                      : Colors.white,
-                                  Icons.arrow_forward,
-                                ),
-                              ),
-                            ],
-                          )
+                    _cardWidget(context, "50+", "Upcoming Events"),
+                    _cardWidget(context, "2K+", "Active Students"),
+                    _cardWidget(context, "10+", "Clubs & Societies"),
                   ],
                 ),
-              ),
-              const Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _cardWidget(context, "50+", "Upcoming Events"),
-                  _cardWidget(context, "10K+", "Active Students"),
-                  _cardWidget(context, "10+", "Clubs & Societies"),
-                ],
-              ),
-              const Spacer(),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -250,7 +247,7 @@ class _HeroSectionState extends State<HeroSection> {
           title,
           style: GoogleFonts.montserrat(
             fontSize: isDesktop ? 40 : 30,
-            color: kMainColor,
+            color: kWhiteColor,
             fontWeight: FontWeight.bold,
           ),
           maxLines: 2,
@@ -263,7 +260,7 @@ class _HeroSectionState extends State<HeroSection> {
             description,
             style: TextStyle(
               fontSize: isDesktop ? 20 : 15,
-              color: kBlackColor,
+              color: kWhiteColor,
               fontWeight: FontWeight.w400,
             ),
             maxLines: 2,

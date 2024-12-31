@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:nibm_unity/constants/colors.dart';
 import 'package:nibm_unity/pages/landing_pages/about_section.dart';
 import 'package:nibm_unity/pages/landing_pages/services_section.dart';
@@ -11,6 +14,7 @@ import 'package:nibm_unity/widgets/gradient_container.dart';
 class LandingPage extends StatelessWidget {
   LandingPage({super.key});
 
+   static const TextStyle _headerStyle = TextStyle(color: kWhiteColor);
   final ScrollController _scrollController = ScrollController();
 
   void _scrollToSection(GlobalKey key) {
@@ -32,67 +36,79 @@ class LandingPage extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     final bool isDesktop = size.width > 900;
 
-    return GradientContainer(
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text(
-            'NIBM UNITY',
-            style: TextStyle(color: Colors.white, fontSize: 20),
+    return ClipRRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: GradientContainer(
+          padding: EdgeInsets.symmetric(
+              horizontal: 40, vertical: isDesktop ? 20 : 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'NIBM UNITY',
+                style: GoogleFonts.knewave(color: kWhiteColor, fontSize: 20),
+              ),
+              if (isDesktop)
+                Row(
+                  children: [
+                    TextButton(
+                      onPressed: () => _scrollToSection(_homeKey),
+                      child: const Text('Home', style: _headerStyle),
+                    ),
+                    TextButton(
+                      onPressed: () => _scrollToSection(_servicesKey),
+                      child: const Text('Services', style: _headerStyle),
+                    ),
+                    TextButton(
+                      onPressed: () => _scrollToSection(_aboutKey),
+                      child: const Text('About', style: _headerStyle),
+                    ),
+                  ],
+                )
+              else
+                PopupMenuButton<int>(
+                  icon: const Icon(Icons.menu, color: kWhiteColor),
+                  onSelected: (int value) {
+                    switch (value) {
+                      case 0:
+                        _scrollToSection(_homeKey);
+                        break;
+                      case 1:
+                        _scrollToSection(_servicesKey);
+                        break;
+                      case 2:
+                        _scrollToSection(_aboutKey);
+                        break;
+                    }
+                  },
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
+                    PopupMenuItem<int>(
+                      value: 0,
+                      child: Text(
+                        'Home',
+                        style: _headerStyle.copyWith(color: kMainColor),
+                      ),
+                    ),
+                    PopupMenuItem<int>(
+                      value: 1,
+                      child: Text(
+                        'Services',
+                        style: _headerStyle.copyWith(color: kMainColor),
+                      ),
+                    ),
+                    PopupMenuItem<int>(
+                      value: 2,
+                      child: Text(
+                        'About',
+                        style: _headerStyle.copyWith(color: kMainColor),
+                      ),
+                    ),
+                  ],
+                ),
+            ],
           ),
-          if (isDesktop)
-            Row(
-              children: [
-                TextButton(
-                  onPressed: () => _scrollToSection(_homeKey),
-                  child:
-                      const Text('Home', style: TextStyle(color: Colors.white)),
-                ),
-                TextButton(
-                  onPressed: () => _scrollToSection(_servicesKey),
-                  child: const Text('Services',
-                      style: TextStyle(color: Colors.white)),
-                ),
-                TextButton(
-                  onPressed: () => _scrollToSection(_aboutKey),
-                  child: const Text('About',
-                      style: TextStyle(color: Colors.white)),
-                ),
-              ],
-            )
-          else
-            PopupMenuButton<int>(
-              icon: const Icon(Icons.menu, color: Colors.white),
-              onSelected: (int value) {
-                switch (value) {
-                  case 0:
-                    _scrollToSection(_homeKey);
-                    break;
-                  case 1:
-                    _scrollToSection(_servicesKey);
-                    break;
-                  case 2:
-                    _scrollToSection(_aboutKey);
-                    break;
-                }
-              },
-              itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
-                const PopupMenuItem<int>(
-                  value: 0,
-                  child: Text('Home'),
-                ),
-                const PopupMenuItem<int>(
-                  value: 1,
-                  child: Text('Services'),
-                ),
-                const PopupMenuItem<int>(
-                  value: 2,
-                  child: Text('About'),
-                ),
-              ],
-            ),
-        ],
+        ),
       ),
     );
   }
@@ -111,41 +127,47 @@ class LandingPage extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
+      body: Stack(
         children: [
-          _buildHeader(context),
-          Expanded(
-            child: SingleChildScrollView(
-              controller: _scrollController,
-              child: Column(
-                children: [
-                  Container(key: _homeKey, child: const HeroSection()),
-                  Divider(
-                    color: Colors.grey[500],
-                    thickness: 1,
+          Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Column(
+                    children: [
+                      Container(key: _homeKey, child: const HeroSection()),
+                      Container(key: _servicesKey, child: ServicesSection()),
+                      Divider(
+                        color: Colors.grey[500],
+                        thickness: 1,
+                      ),
+                      Container(key: _aboutKey, child: const AboutSection()),
+                      GradientContainer(
+                          child: Center(
+                              child: Padding(
+                        padding: const EdgeInsets.all(30),
+                        child: Text(
+                          'Made with ❤️ by NIBM Students',
+                          style: TextStyle(
+                            color: kWhiteColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            fontFamilyFallback: [
+                              GoogleFonts.roboto().fontFamily ?? 'Roboto',
+                              GoogleFonts.notoColorEmoji().fontFamily ??
+                                  'NotoColorEmoji',
+                            ],
+                          ),
+                        ),
+                      ))),
+                    ],
                   ),
-                  Container(key: _servicesKey, child: ServicesSection()),
-                  Divider(
-                    color: Colors.grey[500],
-                    thickness: 1,
-                  ),
-                  Container(key: _aboutKey, child: const AboutSection()),
-                  const GradientContainer(
-                      child: Center(
-                          child: Padding(
-                    padding: EdgeInsets.all(30),
-                    child: Text(
-                      'Made with ❤️ by NIBM Students',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14),
-                    ),
-                  ))),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
+          _buildHeader(context),
         ],
       ),
     );

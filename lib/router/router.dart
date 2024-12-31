@@ -33,6 +33,15 @@ class RouterClass {
         builder: (context, state) {
           return LandingPage();
         },
+        routes: [
+          GoRoute(
+        path: 'events1',
+        name: 'No-log-events',
+        builder: (context, state) {
+          return const EventCardsPage();
+        },
+      ),
+        ]
       ),
       GoRoute(
         path: '/',
@@ -41,13 +50,7 @@ class RouterClass {
           return const SplashScreen();
         },
       ),
-      GoRoute(
-        path: '/no-log-events',
-        name: 'No-log-events',
-        builder: (context, state) {
-          return const EventCardsPage();
-        },
-      ),
+      
       GoRoute(
         path: '/login',
         name: 'login',
